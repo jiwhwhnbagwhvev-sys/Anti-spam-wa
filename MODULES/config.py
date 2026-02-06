@@ -1,56 +1,83 @@
-# ================================
-# CONFIG UTAMA ANTI-SPAM-REAL
-# ================================
+import os
 
-# ===== INFO APLIKASI =====
-APP_NAME = "ANTI SPAM REAL"
-APP_VERSION = "v2.0-2026"
-APP_AUTHOR = "Rio_V2"
+# ==============================
+# KONFIGURASI GLOBAL
+# ==============================
+DEBUG_MODE = True  # True untuk debug output lengkap
+ADB_REQUIRED = True  # ADB wajib untuk fitur nyata Anti-Spam
 
-# ===== LOGIN (FIX SESUAI PERMINTAAN) =====
+# ==============================
+# PATH / FILE
+# ==============================
+BASE_DIR = os.path.expanduser("~/ANTI-SPAM-REAL")
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+
+SESSION_FILE = os.path.join(BASE_DIR, "session.dat")
+LOG_SPAM_FILE = os.path.join(LOG_DIR, "spam.log")
+WHATSAPP_LOG_FILE = os.path.join(LOG_DIR, "whatsapp_calls.log")
+
+# ==============================
+# STATUS GLOBAL
+# ==============================
+STATUS_DND = False
+STATUS_SILENCE_CALLS = False
+STATUS_WHATSAPP_GUARD = False
+
+# ==============================
+# WARNA TERMINAL
+# ==============================
+COLOR_RESET = "\033[0m"
+COLOR_RED = "\033[91m"
+COLOR_GREEN = "\033[92m"
+COLOR_YELLOW = "\033[93m"
+COLOR_BLUE = "\033[94m"
+COLOR_MAGENTA = "\033[95m"
+COLOR_CYAN = "\033[96m"
+COLOR_WHITE = "\033[97m"
+
+# ==============================
+# LOGIN DEFAULT
+# ==============================
 USERNAME = "Rio_V2-antispam"
 PASSWORD = "Rio_V2-2026"
 
-# ===== WARNA TERMINAL =====
-COLOR_BLUE   = "\033[94m"
-COLOR_GREEN  = "\033[92m"
-COLOR_RED    = "\033[91m"
-COLOR_YELLOW = "\033[93m"
-COLOR_RESET  = "\033[0m"
+# ==============================
+# WA / SMS / CALL SETTINGS
+# ==============================
+DEFAULT_CALL_BLOCK = True
+DEFAULT_SMS_BLOCK = True
+DEFAULT_WA_BLOCK = True
 
-# ===== MODE SISTEM =====
-ANTI_SPAM_DEFAULT = True      # aktif otomatis
-LOGGING_ENABLED   = True      # simpan bukti spam
-ADB_REQUIRED      = True      # fitur nyata butuh ADB
+# ==============================
+# UTILITY / FLAG
+# ==============================
+ALLOW_SINGLE_TARGET = True
+ALLOW_MASS_TARGET = True
+ALLOW_LOG_VIEW = True
+ALLOW_FULL_PROTECTION = True
 
-# ===== PATH FOLDER =====
-BASE_DIR   = "ANTI-SPAM-REAL"
-LOG_DIR    = f"{BASE_DIR}/logs"
-DATA_DIR   = f"{BASE_DIR}/data"
-CORE_DIR   = f"{BASE_DIR}/core"
+# ==============================
+# LOG / DEBUG SETTINGS
+# ==============================
+ENABLE_LOGGING = True
+LOG_LEVEL = "DEBUG"  # DEBUG, INFO, WARN, ERROR
 
-# ===== FILE DATA =====
-SPAM_LOG_FILE      = f"{LOG_DIR}/spam.log"
-BLACKLIST_FILE     = f"{DATA_DIR}/blacklist.txt"
-WHITELIST_FILE     = f"{DATA_DIR}/whitelist.txt"
-SESSION_FILE       = f"{DATA_DIR}/session.dat"
+# ==============================
+# FUNGSI BANTU
+# ==============================
+def print_debug(msg):
+    if DEBUG_MODE:
+        print(f"[DEBUG] {msg}")
 
-# ===== STATUS DEFAULT =====
-STATUS_DND            = False
-STATUS_SILENCE_CALLS  = False
-STATUS_WHATSAPP_GUARD = False
+def print_info(msg):
+    print(f"{COLOR_BLUE}[INFO]{COLOR_RESET} {msg}")
 
-# ===== PESAN STATUS =====
-MSG_ON  = "AKTIF"
-MSG_OFF = "NONAKTIF"
+def print_success(msg):
+    print(f"{COLOR_GREEN}[SUCCESS]{COLOR_RESET} {msg}")
 
-# ===== KEAMANAN =====
-MAX_LOGIN_ATTEMPT = 3
-LOCK_TIME_SECONDS = 30
+def print_warning(msg):
+    print(f"{COLOR_YELLOW}[WARNING]{COLOR_RESET} {msg}")
 
-# ===== ANIMASI =====
-LOADING_SPEED = 0.2
-SPINNER = ["|", "/", "-", "\\"]
-
-# ===== DEBUG =====
-DEBUG_MODE = False
+def print_error(msg):
+    print(f"{COLOR_RED}[ERROR]{COLOR_RESET} {msg}")
