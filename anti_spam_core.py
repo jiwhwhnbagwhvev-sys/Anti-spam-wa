@@ -6,14 +6,33 @@ from spam_logger import log_spam, view_logs, search_number
 from colors import print_info, print_success, print_error, print_warning, COLOR_BLUE, COLOR_RESET
 
 # ==============================
+# LOGO TERMINATOR CUSTOM
+# ==============================
+def logo_terminator():
+    logo = [
+        "████████╗██████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗",
+        "╚══██╔══╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝",
+        "   ██║   ██████╔╝██████╔╝██╔████╔██║███████║██████╔╝█████╗  ",
+        "   ██║   ██╔═══╝ ██╔═══╝ ██║╚██╔╝██║██╔══██║██╔═══╝ ██╔══╝  ",
+        "   ██║   ██║     ██║     ██║ ╚═╝ ██║██║  ██║██║     ███████╗",
+        "   ╚═╝   ╚═╝     ╚═╝     ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝",
+        "                       ─── RIO_VIP2.0 ───"
+    ]
+    for line in logo:
+        print(COLOR_BLUE + line.center(80) + COLOR_RESET)
+    print(COLOR_BLUE + "="*80 + COLOR_RESET)
+    print()
+
+# ==============================
 # ANTI-SPAM CORE
 # ==============================
 
-def single_target():
+def single_target(number=None):
     """
     Proteksi single target: DND + Silence Calls + WhatsApp Guard + Logging
     """
-    number = input("Masukkan nomor target: ")
+    if not number:
+        number = input("Masukkan nomor target: ").strip()
     print_info(f"Memproses proteksi untuk nomor: {number}...")
     
     enable_dnd()
@@ -26,20 +45,21 @@ def single_target():
     print_success(f"Proteksi single target untuk {number} selesai!")
     input("Tekan Enter untuk kembali...")
 
-def mass_target():
+def mass_target(numbers=None):
     """
     Proteksi massal target
     """
-    numbers_input = input("Masukkan nomor target dipisah koma (,): ")
-    number_list = [n.strip() for n in numbers_input.split(",") if n.strip()]
+    if not numbers:
+        numbers_input = input("Masukkan nomor target dipisah koma (,): ")
+        numbers = [n.strip() for n in numbers_input.split(",") if n.strip()]
     
     print_info("Memproses proteksi massal...")
     enable_dnd()
     enable_silence_calls()
     enable_whatsapp_guard()
     
-    protect_mass_targets(number_list)
-    for num in number_list:
+    protect_mass_targets(numbers)
+    for num in numbers:
         log_spam(num, source="All", type_spam="Mixed", status="Blocked")
     
     print_success("Proteksi massal selesai!")
@@ -55,15 +75,15 @@ def view_targets():
         print(f"{COLOR_BLUE}2. Filter log per tipe (WA/SMS/Call){COLOR_RESET}")
         print(f"{COLOR_BLUE}3. Cari nomor tertentu{COLOR_RESET}")
         print(f"{COLOR_BLUE}4. Kembali{COLOR_RESET}")
-        choice = input("Pilih menu: ")
+        choice = input("Pilih menu: ").strip()
         
         if choice == "1":
             view_logs()
         elif choice == "2":
-            tipe = input("Masukkan tipe (WA/SMS/Call): ")
+            tipe = input("Masukkan tipe (WA/SMS/Call): ").strip()
             view_logs(filter_type=tipe)
         elif choice == "3":
-            nomor = input("Masukkan nomor: ")
+            nomor = input("Masukkan nomor: ").strip()
             search_number(nomor)
         elif choice == "4":
             break
@@ -75,6 +95,7 @@ def full_protection_test():
     """
     Jalankan semua proteksi sekaligus (test panjang & legal)
     """
+    logo_terminator()
     print_info("Menjalankan full Anti-Spam protection test...")
     enable_dnd()
     enable_silence_calls()
@@ -96,6 +117,7 @@ def full_protection_test():
 # TEST CORE
 # ==============================
 if __name__ == "__main__":
+    logo_terminator()
     print_info("Menjalankan Anti-Spam Core Test Panjang...")
     single_target()
     mass_target()
