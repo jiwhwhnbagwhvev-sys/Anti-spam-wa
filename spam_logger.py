@@ -31,7 +31,7 @@ def log_spam(number, source="Unknown", type_spam="WA", status="Blocked"):
     try:
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
         os.makedirs(os.path.dirname(LOG_SPAM_FILE), exist_ok=True)
-        with open(LOG_SPAM_FILE, "a") as f:
+        with open(ANTI_SPAM_LOG, "a") as f:
             f.write(f"{timestamp} | {number} | {source} | {type_spam} | {status}\n")
         if DEBUG_MODE:
             print(f"[DEBUG] Log dibuat: {timestamp} | {number} | {source} | {type_spam} | {status}")
