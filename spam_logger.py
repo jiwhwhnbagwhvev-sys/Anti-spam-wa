@@ -24,19 +24,20 @@ def logo_terminator():
 # ==============================
 # Logging Fungsi
 # ==============================
-def log_spam(number, source="Unknown", type_spam="WA", status="Blocked"):
-    """
-    Catat spam ke file log
-    """
+def log_spam(number, source, type_spam, status):
+    with open("spam_log.txt", "a") as f:
+        f.write(f"{number} | {source} | {type_spam} | {status}\n")
+
+def blacklist(number):
+    with open("blacklist.txt", "a") as f:
+        f.write(number + "\n")
+
+def is_blacklisted(number):
     try:
-        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        os.makedirs(os.path.dirname(LOG_SPAM_FILE), exist_ok=True)
-        with open(ANTI_SPAM_LOG, "a") as f:
-            f.write(f"{timestamp} | {number} | {source} | {type_spam} | {status}\n")
-        if DEBUG_MODE:
-            print(f"[DEBUG] Log dibuat: {timestamp} | {number} | {source} | {type_spam} | {status}")
-    except Exception as e:
-        print_error(f"Gagal menulis log spam: {e}")
+        with open("blacklist.txt") as f:
+            return number in f.read()
+    except:
+        return False
 
 def view_logs(filter_type=None):
     """
