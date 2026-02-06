@@ -65,17 +65,22 @@ def rainbow_loading(text, duration=3):
 # ==============================
 # SINGLE TARGET (KEREN)
 # ==============================
-def single_target():
+def single_target(number):
     logo_terminal()
-    number = input("Masukkan nomor target : ").strip()
 
     operator = detect_operator(number)
-    print_info(f"Status Verifikasi Nomor")
+
+    print_info("Status Verifikasi Nomor")
     print(f"{COLOR_CYAN}Nomor     : {number}{COLOR_RESET}")
     print(f"{COLOR_CYAN}Operator  : {operator}{COLOR_RESET}")
     print()
 
     rainbow_loading(number, duration=4)
+
+    log_spam(number, source=operator, type_spam="ALL", status="PROTECTED")
+
+    print_success("Proteksi aktif untuk nomor di atas")
+    input("Tekan Enter untuk kembali...")
 
     # simulasi proteksi + logging
     log_spam(number, source=operator, type_spam="ALL", status="PROTECTED")
