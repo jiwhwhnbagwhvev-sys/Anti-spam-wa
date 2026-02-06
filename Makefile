@@ -1,14 +1,6 @@
-cd ~/Anti-spam-wa
 cat > Makefile << 'EOF'
-# ==============================
-# Makefile untuk Anti-Spam-Termux
-# ==============================
-
-.PHONY: run install
-
-install:
-	bash SH/install.sh
+.PHONY: run
 
 run:
-	./run.sh
+	python login.py
 EOF
