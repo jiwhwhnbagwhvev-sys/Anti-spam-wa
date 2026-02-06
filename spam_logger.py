@@ -1,7 +1,7 @@
 import os
 import time
 from colors import print_info, print_success, print_error, COLOR_BLUE, COLOR_RESET
-from config import LOG_SPAM_FILE, DEBUG_MODE
+from config import ANTI_SPAM_LOG, DEBUG_MODE
 
 # ==============================
 # LOGO TERMINATOR
