@@ -1,62 +1,78 @@
-import os
+import sys
 import time
-import getpass
-from colors import print_success, print_error, print_info
-from config import USERNAME, PASSWORD, MAX_LOGIN_ATTEMPT, LOCK_TIME_SECONDS, COLOR_RED, COLOR_BLUE, COLOR_RESET, SPINNER, LOADING_SPEED
+import os
 
-def clear_screen():
+# pastikan MODULES terbaca
+sys.path.append(os.path.join(os.path.dirname(__file__), "MODULES"))
+
+from config import (
+    USERNAME,
+    PASSWORD,
+    MAX_LOGIN_ATTEMPT,
+    LOCK_TIME_SECONDS,
+    COLOR_RED,
+    COLOR_BLUE,
+    COLOR_GREEN,
+    COLOR_RESET,
+    SPINNER,
+    LOADING_SPEED
+)
+from colors import print_success, print_error, print_info
+
+
+def clear():
     os.system("clear")
 
-def logo_terminator():
-    logo = [
-        "████████╗██████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗",
-        "╚══██╔══╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝",
-        "   ██║   ██████╔╝██████╔╝██╔████╔██║███████║██████╔╝█████╗  ",
-        "   ██║   ██╔═══╝ ██╔═══╝ ██║╚██╔╝██║██╔══██║██╔═══╝ ██╔══╝  ",
-        "   ██║   ██║     ██║     ██║ ╚═╝ ██║██║  ██║██║     ███████╗",
-        "   ╚═╝   ╚═╝     ╚═╝     ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝"
-    ]
-    for line in logo:
-        print(COLOR_RED + line + COLOR_RESET)
-    print(COLOR_BLUE + "             TERMINATOR LOGIN" + COLOR_RESET)
+
+def terminator_logo():
+    print(COLOR_BLUE)
+    print(r"""
+████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ████████╗ ██████╗ ██████╗ 
+╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗
+   ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║   ██║   ██║   ██║██████╔╝
+   ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║   ██║   ██║   ██║██╔══██╗
+   ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║   ██║   ╚██████╔╝██║  ██║
+   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
+    """)
+    print(COLOR_RESET)
+
+
+def loading(text="Memverifikasi"):
+    for i in range(20):
+        spin = SPINNER[i % len(SPINNER)]
+        print(f"\r{text} {spin}", end="", flush=True)
+        time.sleep(LOADING_SPEED)
     print()
 
-def loading_animation(message="Memeriksa kredensial..."):
-    import sys
-    for i in range(3):
-        for frame in SPINNER:
-            sys.stdout.write(f"\r{message} {frame}")
-            sys.stdout.flush()
-            time.sleep(LOADING_SPEED)
-    sys.stdout.write("\r" + message + " ✔\n")
 
 def login():
-    clear_screen()
-    logo_terminator()
-    print_info("Silahkan login untuk mengakses menu Anti-Spam Real\n")
-
     attempt = 0
+
     while attempt < MAX_LOGIN_ATTEMPT:
-        username_input = input("Username: ")
-        password_input = getpass.getpass("Password: ")
+        clear()
+        terminator_logo()
 
-        loading_animation("Memverifikasi akun...")
+        print_info("LOGIN ANTI SPAM TERMINATOR\n")
+        user = input("Username : ").strip()
+        pwd = input("Password : ").strip()
 
-        if username_input == USERNAME and password_input == PASSWORD:
+        loading("Memverifikasi")
+
+        if user == USERNAME and pwd == PASSWORD:
             print_success("Login berhasil!")
             time.sleep(1)
-            return True
+            os.system("PYTHONPATH=MODULES python menu.py")
+            sys.exit(0)
         else:
             attempt += 1
-            print_error(f"Login gagal! Sisa percobaan: {MAX_LOGIN_ATTEMPT - attempt}")
-            if attempt >= MAX_LOGIN_ATTEMPT:
-                print_error(f"Terlalu banyak percobaan! Kunci sementara {LOCK_TIME_SECONDS} detik...")
-                time.sleep(LOCK_TIME_SECONDS)
-                attempt = 0  # reset attempt setelah timeout
+            sisa = MAX_LOGIN_ATTEMPT - attempt
+            print_error(f"Login gagal! Sisa percobaan: {sisa}")
+            time.sleep(2)
 
-def main():
-    if login():
-        os.system("python menu.py")  # lanjut ke menu utama
+    print_error(f"Terlalu banyak percobaan! Akun dikunci {LOCK_TIME_SECONDS} detik.")
+    time.sleep(LOCK_TIME_SECONDS)
+    sys.exit(1)
+
 
 if __name__ == "__main__":
-    main()
+    login()
